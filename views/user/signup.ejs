@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="stylesheets/login.css">
+
+<%- layout('/boilerplate/boilerplate') %>
+
+    <div class="register-main-container">
+        <form action="/signup" method="POST">
+            <div class="register-form-container">
+                <h2>Register</h2>
+                <div class="form-control">
+                    <label for="username">Username</label>
+                    <input type="text" name="" id="username" required autofocus>
+                </div>
+                <div class="form-control">
+                    <label for="username">Email</label>
+                    <input type="email" name="" id="email" required>
+                </div>
+                <div class="form-control">
+                    <label for="password">Password</label>
+                    <input type="text" name="" id="password" required>
+                </div>
+                <input type="hidden" name="_csrf" id="" value="<%=csrfToken%>">
+                <button>Register</button>
+            </div>
+        </form>
+    </div>
