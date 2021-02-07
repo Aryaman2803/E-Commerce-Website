@@ -1,24 +1,21 @@
-<link rel="stylesheet" href="stylesheets/login.css">
-
 <%- layout('/boilerplate/boilerplate') %>
 
     <div class="register-main-container">
-        <form action="/signup" method="POST">
+        <form action="/user/register" method="POST">
             <div class="register-form-container">
                 <h2>Register</h2>
                 <div class="form-control">
                     <label for="username">Username</label>
-                    <input type="text" name="" id="username" required autofocus>
+                    <input type="text" name="username" id="username" required autofocus>
                 </div>
                 <div class="form-control">
                     <label for="username">Email</label>
-                    <input type="email" name="" id="email" required>
+                    <input type="email" name="email" id="email" required>
                 </div>
                 <div class="form-control">
                     <label for="password">Password</label>
-                    <input type="text" name="" id="password" required>
+                    <input type="text" name="password" id="password" required>
                 </div>
-                <input type="hidden" name="_csrf" id="" value="<%=csrfToken%>">
                 <button>Register</button>
             </div>
         </form>
