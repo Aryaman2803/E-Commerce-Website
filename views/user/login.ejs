@@ -1,16 +1,16 @@
 <%- layout('/boilerplate/boilerplate') %>
 
     <div class="login-main-container">
-        <form action="" method="POST">
+        <form action="/user/login" method="POST">
             <div class="login-form-container">
                 <h2>Login</h2>
                 <div class="form-control">
                     <label for="username">Username</label>
-                    <input type="text" name="" id="username" required autofocus>
+                    <input type="text" name="username" id="username" required autofocus>
                 </div>
                 <div class="form-control">
                     <label for="password">Password</label>
-                    <input type="text" name="" id="password" required>
+                    <input type="text" name="password" id="password" required>
                 </div>
                 <button>Login</button>
             </div>

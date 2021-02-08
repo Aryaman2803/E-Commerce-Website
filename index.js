@@ -22,9 +22,18 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  session({ secret: "mysecret", resave: false, saveUninitialized: true })
-);
+const sessionConfig = {
+  name: "usersession",
+  secret: "mysecret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+app.use(session(sessionConfig));
 
 app.use(flash());
 // app.all("*", csrfProtection);
@@ -38,6 +47,7 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user;
+  // console.log(req.user);
   next();
 });
 // function wrapAsync(fn) {
@@ -57,10 +67,11 @@ app.get("/index", async (req, res, next) => {
     next(e);
   }
 });
-
-app.get("/user/login", (req, res) => {
-  // throw new ExpressError("What is going on!!",412);
-  res.render("user/login");
+app.get("/index/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  res.render("shop/show", { product });
+  // console.log(req.params.id);
 });
 
 app.get("/user/register", (req, res, next) => {
@@ -81,6 +92,52 @@ app.post("/user/register", async (req, res, next) => {
     req.flash("error", e.message);
     res.redirect("register");
   }
+});
+
+app.get("/user/login", (req, res) => {
+  // throw new ExpressError("What is going on!!",412);
+  res.render("user/login");
+});
+
+// app.post(
+//   "/login",
+//   passport.authenticate("local", {
+//     faliureFlash: true,
+//     faliureRedirect: "/login",
+//   }),
+//   (req, res) => {
+//     req.flash("success", "Welcome Back!");
+//     const redirectUrl = req.session.returnTo || "/index";
+//     delete req.session.returnTo;
+//     res.redirect(redirectUrl);
+//   }
+// );
+
+app.post(
+  "/user/login",
+  passport.authenticate("local", {
+    failureFlash: true,
+    failureRedirect: "/user/login",
+  }),
+  (req, res) => {
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    req.flash(
+      "success",
+      `Welcome, ${capitalizeFirstLetter(req.user.username)}!`
+    );
+    const redirectUrl = req.session.returnTo || "/index";
+    delete req.session.returnTo;
+    // console.log(req);
+    res.redirect(redirectUrl);
+  }
+);
+
+app.get("/user/logout", (req, res) => {
+  req.logout();
+  req.flash("success", "Thank You For Shopping!");
+  res.redirect("/index");
 });
 
 app.all("*", (req, res, next) => {

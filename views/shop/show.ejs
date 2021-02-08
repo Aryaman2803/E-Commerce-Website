@@ -1,0 +1,29 @@
+<%- layout('/boilerplate/boilerplate') %>
+    <div class="show-main-container">
+        <div class="show-card-container">
+            <div class="left-container">
+                <div class="show-card-img">
+                    <img src="<%=product.image%>" alt="">
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="show-card-category">
+                    <%=product.category %>
+                </div>
+                <div class="show-card-title">
+                    <%=product.title %>
+                </div>
+                <div class="show-card-price">
+                    &#8377; <%=product.price %>
+                </div>
+                <div class="show-card-description">
+                    <p>
+                        <%=product.description %>
+                    </p>
+                </div>
+                <form action="">
+                    <button class="show-card-button">Add To Cart </button>
+                </form>
+            </div>
+        </div>
+    </div>

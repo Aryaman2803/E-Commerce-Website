@@ -6,7 +6,9 @@
                 <div class="card-body">
                     <div class="product-image"><img src="<%= product.image %>" alt=""> </div>
                     <div class="product-title">
-                        <%= product.title %>
+                        <a href="/index/<%= product._id%>">
+                            <%= product.title %>
+                        </a>
                     </div>
                     <div class="product-price">
                         &#x20B9; <%= product.price %>
