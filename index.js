@@ -14,7 +14,7 @@ const ExpressError = require("./utils/ExpressError");
 const passport = require("passport");
 const flash = require("connect-flash");
 const User = require("./models/user");
-
+const MongoStore = require("connect-mongo")(session);
 require("./config/passport");
 
 app.set("view engine", "ejs");
@@ -27,6 +27,7 @@ const sessionConfig = {
   secret: "mysecret",
   resave: false,
   saveUninitialized: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: {
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user;
+  res.locals.session = req.session;
   // console.log(req.user);
   next();
 });
@@ -154,3 +156,11 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Connected Port: ${port}`);
 });
+
+function isLoggedIn(req, res, next) {
+  if (!req.isAuthenticated()) {
+    req.session.returnTo = req.originalUrl;
+    req.flash('error','You must be signed in first!')
+    return res.redirect('/login')
+  }
+}

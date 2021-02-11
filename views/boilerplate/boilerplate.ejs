@@ -18,8 +18,8 @@
         <div class="container">
             <a href="#home">Walmart</a>
             <a href="/index">Cart</a>
-            <a href="/user/register">Sign Up</a>
             <% if(!currentUser) {%>
+                <a href="/user/register">Sign Up</a>
                 <a href="/user/login">Login</a>
                 <% } else {%>
                     <a href="/user/logout">Logout</a>
