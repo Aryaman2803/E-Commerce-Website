@@ -16,14 +16,18 @@
 <body>
     <nav>
         <div class="container">
-            <a href="#home">Walmart</a>
-            <a href="/index">Cart</a>
-            <% if(!currentUser) {%>
-                <a href="/user/register">Sign Up</a>
-                <a href="/user/login">Login</a>
-                <% } else {%>
-                    <a href="/user/logout">Logout</a>
+            <a href="/index">Walmart</a>
+            <% if(session.cart){ %>
+                <a href="/cart">Cart <%=session.cart.totalQty %> </a>
+                <% }else{ %>
+                    <a href="/cart">Cart </a>
                     <% } %>
+                        <% if(!currentUser) {%>
+                            <a href="/user/register">Sign Up</a>
+                            <a href="/user/login">Login</a>
+                            <% } else {%>
+                                <a href="/user/logout">Logout</a>
+                                <% } %>
         </div>
     </nav>
     <%- include('../partials/flash') %>

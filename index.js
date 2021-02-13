@@ -16,6 +16,7 @@ const flash = require("connect-flash");
 const User = require("./models/user");
 const MongoStore = require("connect-mongo")(session);
 require("./config/passport");
+const Cart = require("./models/cart");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user;
+  res.locals.cart = req.session.cart;
   res.locals.session = req.session;
   // console.log(req.user);
   next();
@@ -69,11 +71,54 @@ app.get("/index", async (req, res, next) => {
     next(e);
   }
 });
+
 app.get("/index/:id", async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
   res.render("shop/show", { product });
   // console.log(req.params.id);
+});
+
+app.get("/cart", (req, res) => {
+  if (!req.session.cart) {
+    return res.render("shop/cart", { products: null });
+  }
+  const cart = new Cart(req.session.cart);
+  console.log(cart)
+  res.render("shop/cart", {
+    products: cart.generateArray(),
+    totalPrice: cart.totalPrice,
+  });
+ 
+  // console.log(req.params.id);
+});
+
+app.get("/index/:id/add-to-cart", async (req, res) => {
+  const { id } = req.params;
+  const cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  Product.findById(id, function (err, product) {
+    if (err) {
+      return res.redirect("/index");
+    }
+    cart.add(product, product._id);
+    req.session.cart = cart;
+    console.log(id);
+    console.log(req.session.cart);
+    res.redirect("/index");
+  });
+
+  // console.log(id);
+  // console.log(req.user._id);
+  // if (!req.session.cart) {
+  //   req.session.cart = [];
+  //   req.session.cart.push({
+  //     userId: req.user._id,
+  //     items: Product.populate(Product.findById(id)),
+  //   });
+  //   await Cart.save();
+  //   res.redirect("/index");
+  // }
 });
 
 app.get("/user/register", (req, res, next) => {
@@ -100,20 +145,6 @@ app.get("/user/login", (req, res) => {
   // throw new ExpressError("What is going on!!",412);
   res.render("user/login");
 });
-
-// app.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     faliureFlash: true,
-//     faliureRedirect: "/login",
-//   }),
-//   (req, res) => {
-//     req.flash("success", "Welcome Back!");
-//     const redirectUrl = req.session.returnTo || "/index";
-//     delete req.session.returnTo;
-//     res.redirect(redirectUrl);
-//   }
-// );
 
 app.post(
   "/user/login",
@@ -160,7 +191,8 @@ app.listen(port, () => {
 function isLoggedIn(req, res, next) {
   if (!req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl;
-    req.flash('error','You must be signed in first!')
-    return res.redirect('/login')
+    req.flash("error", "You must be signed in first!");
+    return res.redirect("/login");
   }
+  next();
 }

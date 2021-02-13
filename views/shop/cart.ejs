@@ -1,0 +1,48 @@
+<%- layout('/boilerplate/boilerplate') %>
+    <% if( products){ %>
+        <div class="cart-main-container">
+            <div class="left-body-container">
+                <div class="myBag">My Bag</div>        
+                <ul>
+                    <li>
+                        <% for(let product of products){ %>
+                            <div class="cart-body-container">
+                                <div class="left-img-cart-body">
+                                    <img src="" alt="">
+                                </div>
+                                <div class="right-cart-detail-body">
+                                    <div id="cart-item-price">&#x20B9; <%=product.item.price%></div>
+                                    <div id="cart-item-title"><%=product.item.title %></div>
+                                    <div id="cart-item-quantity">Qty <%=product.qty %></div>
+                                </div>
+                            </div>
+                            <% } %>
+                    </li>
+                </ul>
+
+                <!-- <ol>
+                    <% for(let product of products) {%>
+                        Title: <%=product.item.title %> 
+                        <% } %>  
+                </ol> -->
+            </div>
+            <div class="right-body-container">
+                <strong>TOTAL</strong>
+                <div class="left-subtotal">
+                    <span>Sub-total</span>
+                </div>
+                <div class="left-subtotal">
+                    <span>Delivery</span>
+                </div>
+            </div>
+        </div>
+        <% } else { %>
+            <div class="cart-main-container">
+                <div class="cart-body-container">
+                    <ol>
+                        <h1>No Items in Cart</h1>
+
+                    </ol>
+                </div>
+            </div>
+            <% } %>
