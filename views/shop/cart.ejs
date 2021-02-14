@@ -2,47 +2,61 @@
     <% if( products){ %>
         <div class="cart-main-container">
             <div class="left-body-container">
-                <div class="myBag">My Bag</div>        
-                <ul>
+                <div id="myBag">MY BAG
+                    <div id="borderBottom"></div>
+                </div>
+                <ul class="cart-list">
                     <li>
                         <% for(let product of products){ %>
                             <div class="cart-body-container">
                                 <div class="left-img-cart-body">
-                                    <img src="" alt="">
+                                    <img src="<%=product.item.image %>" alt="">
                                 </div>
                                 <div class="right-cart-detail-body">
-                                    <div id="cart-item-price">&#x20B9; <%=product.item.price%></div>
-                                    <div id="cart-item-title"><%=product.item.title %></div>
-                                    <div id="cart-item-quantity">Qty <%=product.qty %></div>
+                                    <div id="cart-item-price">&#x20B9; <%=product.item.price%>
+                                    </div>
+                                    <div id="cart-item-title">
+                                        <%=product.item.title %>
+                                    </div>
+                                    <div id="cart-item-quantity">Qty <%=product.qty %>
+                                    </div>
                                 </div>
                             </div>
                             <% } %>
                     </li>
                 </ul>
-
-                <!-- <ol>
-                    <% for(let product of products) {%>
-                        Title: <%=product.item.title %> 
-                        <% } %>  
-                </ol> -->
             </div>
+
             <div class="right-body-container">
                 <strong>TOTAL</strong>
+                <div id="borderBottom"></div>
                 <div class="left-subtotal">
                     <span>Sub-total</span>
+                    <span id="subtotalPrice">&#x20B9; <%=totalPrice %> </span>
                 </div>
                 <div class="left-subtotal">
                     <span>Delivery</span>
+                    <span id="subtotalPrice"> &#x20B9; 150</span>
+                </div>
+                <div class="left-subtotal total">
+                    <span>Total</span>
+                    <span id="subtotalPrice">&#x20B9;<%=totalPrice+150 %> </span>
+                </div>
+                <div class="checkout">
+                    <img src="https://images-na.ssl-images-amazon.com/images/I/71H9iX%2B14pL._AC_SL1500_.jpg" alt="">
+                    <form action="#">
+                        <button id="checkoutBtn"><span>Checkout</span></button>
+                    </form>
                 </div>
             </div>
         </div>
         <% } else { %>
             <div class="cart-main-container">
                 <div class="cart-body-container">
-                    <ol>
+                    <ul class="cart-list">
                         <h1>No Items in Cart</h1>
 
-                    </ol>
+                    </ul>
                 </div>
             </div>
             <% } %>
