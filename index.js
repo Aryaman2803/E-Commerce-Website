@@ -17,6 +17,9 @@ const User = require("./models/user");
 const MongoStore = require("connect-mongo")(session);
 require("./config/passport");
 const Cart = require("./models/cart");
+const stripe = require("stripe")(
+  "sk_test_51IL7crIfc54TOuJGE0BGM2BRvwH9uUgX9nKuxxh99Eu4TBgbYrBMbvPQPd7M6rGzF68r3F5xjBHekJElpavRHNRE00OUP20vKC"
+);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -100,6 +103,28 @@ app.get("/checkout", (req, res, next) => {
   res.render("shop/checkout", { totalPrice: cart.totalPrice });
 });
 
+app.post("/create-checkout-session", async (req, res, next) => {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: "T-shirt",
+          },
+          unit_amount: 2000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: "http://localhost:3000/index",
+    cancel_url: "http://localhost:3000/index",
+  });
+  res.json({ id: session.id });
+  // console.log(req.session);
+});
 app.get("/index/:id/add-to-cart", async (req, res) => {
   const { id } = req.params;
   const cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -110,8 +135,8 @@ app.get("/index/:id/add-to-cart", async (req, res) => {
     }
     cart.add(product, product._id);
     req.session.cart = cart;
-    console.log(id);
-    console.log(req.session.cart);
+    // console.log(id);
+    // console.log(req.session.cart);
     res.redirect("/index");
   });
 

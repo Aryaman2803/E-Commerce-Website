@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/stylesheets/showItem.css">
     <link rel="stylesheet" href="/stylesheets/cart.css">
     <link rel="stylesheet" href="/stylesheets/checkout.css">
+
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>
@@ -33,6 +35,8 @@
         </div>
     </nav>
     <%- include('../partials/flash') %>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.js"
+            integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
         <%- body %>
             <footer>
                 <div class="container">

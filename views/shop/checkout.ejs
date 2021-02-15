@@ -2,8 +2,9 @@
 
     <div class="checkout-main-container">
         <div class="checkout-body-container">
-            <form action="#" method="POST">
+            <form action="/checkout" method="POST" id="checkout-form">
                 <strong>Checkout</strong>
+                <div id="card-errors" role="alert"></div>
                 <b>Your Total: &#x20B9;</b>
                 <%=totalPrice+150 %>
                     <div class="checkout-input">
@@ -15,26 +16,28 @@
                         <input type="text" name="address" id="address">
                     </div>
                     <div class="checkout-input">
-                        <label for="cardholder-name">Card Holder Name</label>
-                        <input type="text" name="cardholder-name" id="cardholder-name">
+                        <label for="card-name">Card Holder Name</label>
+                        <input type="text" name="card-name" id="card-name">
                     </div>
                     <div class="checkout-input">
-                        <label for="creditcard-number">Credit Card Number</label>
-                        <input type="text" name="creditcard-number" id="creditcard-number">
+                        <label for="card-number">Credit Card Number</label>
+                        <input type="text" name="card-number" id="card-number">
                     </div>
                     <div class="checkout-input">
-                        <label for="card-expiration-month">Expiration Month</label>
-                        <input type="text" name="card-expiration-month" id="card-expiration-month">
+                        <label for="card-expiry-month">Expiration Month</label>
+                        <input type="text" name="card-expiry-month" id="card-expiry-month">
                     </div>
                     <div class="checkout-input">
-                        <label for="card-expiration-year">Expiration Year</label>
-                        <input type="text" name="card-expiration-year" id="card-expiration-year">
+                        <label for="card-expiry-year">Expiration Year</label>
+                        <input type="text" name="card-expiry-year" id="card-expiry-year">
                     </div>
                     <div class="checkout-input">
                         <label for="card-cvc">CVC</label>
                         <input type="text" name="card-cvc" id="card-cvc">
                     </div>
-                    <button class="checkout-buy">Buy</button>
+                    <button class="checkout-buy" id="checkout-button">Buy</button>
             </form>
         </div>
     </div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript" src="/public/javascripts/checkout.js"></script>
