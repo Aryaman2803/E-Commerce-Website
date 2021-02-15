@@ -84,13 +84,20 @@ app.get("/cart", (req, res) => {
     return res.render("shop/cart", { products: null });
   }
   const cart = new Cart(req.session.cart);
-  console.log(cart)
+  // console.log(cart);
   res.render("shop/cart", {
     products: cart.generateArray(),
     totalPrice: cart.totalPrice,
   });
- 
+
   // console.log(req.params.id);
+});
+app.get("/checkout", (req, res, next) => {
+  if (!req.session.cart) {
+    return res.render("shop/cart", { products: null });
+  }
+  const cart = new Cart(req.session.cart);
+  res.render("shop/checkout", { totalPrice: cart.totalPrice });
 });
 
 app.get("/index/:id/add-to-cart", async (req, res) => {

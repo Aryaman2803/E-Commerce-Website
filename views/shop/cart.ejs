@@ -3,6 +3,7 @@
         <div class="cart-main-container">
             <div class="left-body-container">
                 <div id="myBag">MY BAG
+                    <span><a href="">Clear Cart</a></span>
                     <div id="borderBottom"></div>
                 </div>
                 <ul class="cart-list">
@@ -19,6 +20,8 @@
                                         <%=product.item.title %>
                                     </div>
                                     <div id="cart-item-quantity">Qty <%=product.qty %>
+                                    </div>
+                                    <div id="cart-item-delete"><a href="">Delete</a>
                                     </div>
                                 </div>
                             </div>
@@ -44,9 +47,9 @@
                 </div>
                 <div class="checkout">
                     <img src="https://images-na.ssl-images-amazon.com/images/I/71H9iX%2B14pL._AC_SL1500_.jpg" alt="">
-                    <form action="#">
-                        <button id="checkoutBtn"><span>Checkout</span></button>
-                    </form>
+                    
+                        <a href="/checkout"><button id="checkoutBtn"><span>Checkout</span></button></a>
+                    
                 </div>
             </div>
         </div>
