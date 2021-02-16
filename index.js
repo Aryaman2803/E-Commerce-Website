@@ -17,6 +17,7 @@ const User = require("./models/user");
 const MongoStore = require("connect-mongo")(session);
 require("./config/passport");
 const Cart = require("./models/cart");
+const Order = require("./models/order");
 const stripe = require("stripe")(
   "sk_test_51IL7crIfc54TOuJGE0BGM2BRvwH9uUgX9nKuxxh99Eu4TBgbYrBMbvPQPd7M6rGzF68r3F5xjBHekJElpavRHNRE00OUP20vKC"
 );
@@ -103,28 +104,84 @@ app.get("/checkout", (req, res, next) => {
   res.render("shop/checkout", { totalPrice: cart.totalPrice });
 });
 
+// app.get("/paymentsuccess", (req, res) => {
+//   const cart = new Cart(req.session.cart);
+//   req.session.cart = null;
+//   res.render("shop/paymentsuccess", {});
+// });
+
 app.post("/create-checkout-session", async (req, res, next) => {
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: [
-      {
-        price_data: {
-          currency: "inr",
-          product_data: {
-            name: "T-shirt",
-          },
-          unit_amount: 2000,
-        },
-        quantity: 1,
+  if (!req.session.cart) {
+    return res.render("shop/cart", { products: null });
+  }
+  const cart = new Cart(req.session.cart);
+  const totalPrice = (cart.totalPrice + 150) * 100;
+  // req.session.destroy();
+  try {
+    const session = await stripe.checkout.sessions.create({
+      billing_address_collection: "required",
+      shipping_address_collection: {
+        allowed_countries: ["US", "CA", "IN"],
       },
-    ],
-    mode: "payment",
-    success_url: "http://localhost:3000/index",
-    cancel_url: "http://localhost:3000/index",
-  });
-  res.json({ id: session.id });
-  // console.log(req.session);
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "inr",
+            product_data: {
+              name: "Pay",
+            },
+            unit_amount: totalPrice,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      // success_url: "http://localhost:3000/paymentsuccess",
+      // success_url: "http://localhost:3000/index",
+      success_url: "http://localhost:3000/getpayment_intents",
+      cancel_url: "http://localhost:3000/cart",
+    });
+    res.json({ id: session.id });
+
+    // console.log(session);
+    // const order = new Order({
+    //   user: req.user,
+    //   cart: cart,
+    // });
+  } catch (e) {
+    next(e);
+  }
+
+  req.session.cart = null;
 });
+
+app.get("/getpayment_intents", async (req, res, next) => {
+  const stripe = require("stripe")(
+    "sk_test_51IL7crIfc54TOuJGE0BGM2BRvwH9uUgX9nKuxxh99Eu4TBgbYrBMbvPQPd7M6rGzF68r3F5xjBHekJElpavRHNRE00OUP20vKC"
+  );
+
+  const paymentIntents = await stripe.paymentIntents.list({
+    limit: 3,
+  });
+
+  const paymentId = paymentIntents.data[0].id;
+  const name = paymentIntents.data[0].shipping.name;
+  const address = paymentIntents.data[0].shipping.address;
+  const user = req.user;
+  
+  // const order = new Order({
+  //   user: req.user,
+  //   cart: req.session.cart,
+  //   address: address,
+  //   paymentId:
+  // });
+
+  req.session.cart = null;
+  req.flash("success", "Thank you for shopping!");
+  res.redirect("/index");
+});
+
 app.get("/index/:id/add-to-cart", async (req, res) => {
   const { id } = req.params;
   const cart = new Cart(req.session.cart ? req.session.cart : {});

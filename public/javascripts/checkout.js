@@ -22,6 +22,8 @@ checkoutButton.addEventListener("click", () => {
       console.log("Error", error);
     });
 });
+
+
 // var $form = $("#checkout-form");
 // $form.submit(function (event) {
 //   $form.find("button").prop("disabled", true);
