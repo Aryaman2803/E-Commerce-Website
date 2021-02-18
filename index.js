@@ -18,6 +18,7 @@ const MongoStore = require("connect-mongo")(session);
 require("./config/passport");
 const Cart = require("./models/cart");
 const Order = require("./models/order");
+const { isLoggedIn } = require("./middleware");
 const stripe = require("stripe")(
   "sk_test_51IL7crIfc54TOuJGE0BGM2BRvwH9uUgX9nKuxxh99Eu4TBgbYrBMbvPQPd7M6rGzF68r3F5xjBHekJElpavRHNRE00OUP20vKC"
 );
@@ -83,7 +84,21 @@ app.get("/index/:id", async (req, res) => {
   // console.log(req.params.id);
 });
 
-app.get("/cart", (req, res) => {
+app.get("/user/profile", isLoggedIn, async (req, res, next) => {
+  try {
+    const orders = await Order.find({ user: req.user });
+    let cart;
+    orders.forEach(function (order) {
+      cart = new Cart(order.cart);
+      order.items = cart.generateArray();
+    });
+    res.render("user/profile", { orders: orders });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.get("/cart", isLoggedIn, (req, res) => {
   if (!req.session.cart) {
     return res.render("shop/cart", { products: null });
   }
@@ -110,7 +125,7 @@ app.get("/checkout", (req, res, next) => {
 //   res.render("shop/paymentsuccess", {});
 // });
 
-app.post("/create-checkout-session", async (req, res, next) => {
+app.post("/create-checkout-session", isLoggedIn, async (req, res, next) => {
   if (!req.session.cart) {
     return res.render("shop/cart", { products: null });
   }
@@ -156,7 +171,7 @@ app.post("/create-checkout-session", async (req, res, next) => {
   req.session.cart = null;
 });
 
-app.get("/getpayment_intents", async (req, res, next) => {
+app.get("/getpayment_intents", isLoggedIn, async (req, res, next) => {
   const stripe = require("stripe")(
     "sk_test_51IL7crIfc54TOuJGE0BGM2BRvwH9uUgX9nKuxxh99Eu4TBgbYrBMbvPQPd7M6rGzF68r3F5xjBHekJElpavRHNRE00OUP20vKC"
   );
@@ -164,25 +179,32 @@ app.get("/getpayment_intents", async (req, res, next) => {
   const paymentIntents = await stripe.paymentIntents.list({
     limit: 3,
   });
+  try {
+    const paymentId = paymentIntents.data[0].id;
+    const name = paymentIntents.data[0].shipping.name;
+    const address = paymentIntents.data[0].shipping.address;
+    const user = req.user;
 
-  const paymentId = paymentIntents.data[0].id;
-  const name = paymentIntents.data[0].shipping.name;
-  const address = paymentIntents.data[0].shipping.address;
-  const user = req.user;
-  
-  // const order = new Order({
-  //   user: req.user,
-  //   cart: req.session.cart,
-  //   address: address,
-  //   paymentId:
-  // });
+    const order = new Order({
+      user: user,
+      cart: req.session.cart,
+      name: name,
+      address: address,
+      paymentId: paymentId,
+    });
 
-  req.session.cart = null;
-  req.flash("success", "Thank you for shopping!");
-  res.redirect("/index");
+    await order.save();
+    req.session.cart = null;
+
+    // console.log(order);
+    req.flash("success", "Thank you for shopping!");
+    res.redirect("/index");
+  } catch (e) {
+    next(e);
+  }
 });
 
-app.get("/index/:id/add-to-cart", async (req, res) => {
+app.get("/index/:id/add-to-cart", isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const cart = new Cart(req.session.cart ? req.session.cart : {});
 
@@ -194,20 +216,9 @@ app.get("/index/:id/add-to-cart", async (req, res) => {
     req.session.cart = cart;
     // console.log(id);
     // console.log(req.session.cart);
-    res.redirect("/index");
-  });
 
-  // console.log(id);
-  // console.log(req.user._id);
-  // if (!req.session.cart) {
-  //   req.session.cart = [];
-  //   req.session.cart.push({
-  //     userId: req.user._id,
-  //     items: Product.populate(Product.findById(id)),
-  //   });
-  //   await Cart.save();
-  //   res.redirect("/index");
-  // }
+    res.redirect(`/index/${id}`);
+  });
 });
 
 app.get("/user/register", (req, res, next) => {
@@ -222,7 +233,9 @@ app.post("/user/register", async (req, res, next) => {
     req.login(registeredUser, (err) => {
       if (err) return next(err);
       req.flash("success", "Welcome To Walmart!");
-      return res.redirect("/index");
+      const redirectUrl = req.session.returnTo || "/index";
+      delete req.session.returnTo;
+      return res.redirect(redirectUrl);
     });
   } catch (e) {
     req.flash("error", e.message);
@@ -276,12 +289,3 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Connected Port: ${port}`);
 });
-
-function isLoggedIn(req, res, next) {
-  if (!req.isAuthenticated()) {
-    req.session.returnTo = req.originalUrl;
-    req.flash("error", "You must be signed in first!");
-    return res.redirect("/login");
-  }
-  next();
-}

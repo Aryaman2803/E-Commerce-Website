@@ -1,2 +1,12 @@
-const ExpressError = require('./utils/ExpressError')
- 
+const ExpressError = require("./utils/ExpressError");
+
+module.exports.isLoggedIn = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    req.session.returnTo = req.originalUrl;
+    req.flash("error", "You must be signed in first!");
+    return res.redirect('/user/login');
+  }
+  next();
+};
+
+// module.exports.notLoggedIn = (req,res,next)=

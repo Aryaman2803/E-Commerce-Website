@@ -1,0 +1,58 @@
+<%- layout('/boilerplate/boilerplate') %>
+    <span>
+        <h1>User Profile</h1>
+    </span>
+    <h2>My Orders</h2>
+    <div class="orders-body-container">
+        <div class="orders-main-container">
+            <% for(order of orders){ %>
+                <ul>
+                    <li>
+                       <div class="list-container">
+                        <%for(ord of order.items){ %>
+                            <div class="order-title">
+                                <%=ord.item.title %>
+                            </div>
+
+                            <% } %>
+                                <div class="order-totalprice">
+                                    Total Price:&#8377; <%=order.cart.totalPrice %>
+                                </div>
+                       </div>
+                    </li>
+
+                </ul>
+                <% } %>
+        </div>
+    </div>
+
+
+    <!-- <div class="orders-body-container">
+   
+    <div class="orders-main-container">
+        <div class="order-container">
+            <span id="single-order">
+                <% for(order of orders){ %>
+                    <ul>
+                        <li>
+                            <%for(ord of order.items){ %>
+                                <div class="order-title">
+                                    <%=ord.item.title %>
+                                </div>
+
+                                <% } %>
+                                    <div class="order-totalprice">
+                                        Total Price <%=order.cart.totalPrice %>
+                                    </div>
+                        </li>
+
+                    </ul>
+                    <% } %>
+
+            </span>
+
+
+        </div>
+    </div>
+
+</div> -->
