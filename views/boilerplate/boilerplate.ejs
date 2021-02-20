@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Walmart</title>
+    <link rel="stylesheet" href="/stylesheets/index.css">
     <link rel="stylesheet" href="/stylesheets/login.css">
     <link rel="stylesheet" href="/stylesheets/index.css">
     <link rel="stylesheet" href="/stylesheets/error.css">
@@ -15,37 +16,89 @@
     <link rel="stylesheet" href="/stylesheets/checkout.css">
     <link rel="stylesheet" href="/stylesheets/profile.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
     <script src="https://js.stripe.com/v3/"></script>
+
+
 </head>
 
 <body>
-    <nav>
-        <div class="container">
-            <a href="/index">Walmart</a>
-            <% if(session.cart){ %>
-                <a href="/cart">Cart <%=session.cart.totalQty %> </a>
-                <% }else{ %>
-                    <a href="/cart">Cart </a>
-                    <% } %>
-                        <% if(!currentUser) {%>
-                            <a href="/user/register">Sign Up</a>
-                            <a href="/user/login">Login</a>
-                            <% } else {%>
-                                <a href="/user/profile">Profile</a>
-                                <a href="/user/logout">Logout</a>
-                                <% } %>
-        </div>
-    </nav>
+    <header class="navbar-header">
+        <nav>
+            <a href="/index">
+                <h1>Walmart</h1>
+            </a>
+            <ul class="nav-links">
+                <% if(session.cart){ %>
+                    <li><a href="/cart">Cart <%=session.cart.totalQty %> </a></li>
+                    <% } else{%>
+                        <li><a href="/cart">Cart</a></li>
+                        <% } %>
+
+                            <% if(!currentUser){ %>
+                                <li><a href="/user/register">Sign Up</a></li>
+                                <li><a href="/user/login">login</a></li>
+                                <% } else{%>
+                                    <li><a href="/user/profile">Profile</a></li>
+                                    <li><a href="/user/logout">Logout</a></li>
+                                    <% } %>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+
+        </nav>
+    </header>
+
+
     <%- include('../partials/flash') %>
+
         <script src="https://code.jquery.com/jquery-3.5.1.slim.js"
             integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
-        <%- body %>
-            <footer>
-                <div class="container">
-                    <span>&copy; Walmart 2021 </span>
-                </div>
-            </footer>
 
+        <div class="pageContentWrapper">
+            <%- body %>
+        </div>
+
+        <footer>
+            <span>&copy; Walmart 2021 </span>
+        </footer>
+
+
+        <script>
+            const navSlide = () => {
+                const burger = document.querySelector('.burger');
+                const nav = document.querySelector('.nav-links');
+                const navLinks = document.querySelectorAll('.nav-links li');
+
+                //Toggle Nav
+                burger.addEventListener('click', () => {
+                    nav.classList.toggle('nav-active')
+
+                    //Animate Links
+                    navLinks.forEach((links, index) => {
+                        if (links.style.animation) {
+                            links.style.animation = ''
+                        } else {
+                            links.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.7}s`;
+                        }
+                    })
+
+                    //Burger Animation
+                    burger.classList.toggle('toggle')
+                })
+
+
+
+            }
+
+            navSlide();
+        </script>
 </body>
 
 </html>

@@ -13,7 +13,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  cart: {
+   cart: {
     type: Schema.Types.ObjectId,
     ref: "Cart",
   },

@@ -19,6 +19,8 @@ require("./config/passport");
 const Cart = require("./models/cart");
 const Order = require("./models/order");
 const { isLoggedIn } = require("./middleware");
+const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require("constants");
+const { Session } = require("inspector");
 const stripe = require("stripe")(
   "sk_test_51IL7crIfc54TOuJGE0BGM2BRvwH9uUgX9nKuxxh99Eu4TBgbYrBMbvPQPd7M6rGzF68r3F5xjBHekJElpavRHNRE00OUP20vKC"
 );
@@ -28,12 +30,24 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
+const dbUrl = "mongodb://localhost:27017/e-commerce";
+const secret = "mysecret";
+const store = new MongoStore({
+  url: dbUrl,
+  collection: "sessions",
+  secret: secret,
+  touchAfter: 24 * 60 * 60,
+});
+store.on("error", function (e) {
+  console.log("Session Store Error", e);
+});
 const sessionConfig = {
   name: "usersession",
   secret: "mysecret",
   resave: false,
+  store: store,
   saveUninitialized: true,
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  // store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: {
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
@@ -56,7 +70,7 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   res.locals.cart = req.session.cart;
   res.locals.session = req.session;
-  // console.log(req.user);
+  // console.log(res.locals.session.cart);
   next();
 });
 // function wrapAsync(fn) {
@@ -103,12 +117,12 @@ app.get("/cart", isLoggedIn, (req, res) => {
     return res.render("shop/cart", { products: null });
   }
   const cart = new Cart(req.session.cart);
-  // console.log(cart);
+  req.session.cart = cart;
   res.render("shop/cart", {
     products: cart.generateArray(),
     totalPrice: cart.totalPrice,
   });
-
+  // console.log(req.session.cart)
   // console.log(req.params.id);
 });
 app.get("/checkout", (req, res, next) => {
@@ -119,11 +133,20 @@ app.get("/checkout", (req, res, next) => {
   res.render("shop/checkout", { totalPrice: cart.totalPrice });
 });
 
-// app.get("/paymentsuccess", (req, res) => {
-//   const cart = new Cart(req.session.cart);
-//   req.session.cart = null;
-//   res.render("shop/paymentsuccess", {});
-// });
+app.get("/index/:id/add-to-cart", isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  const cart = new Cart(req.session.cart ? req.session.cart : {});
+  Product.findById(id, function (err, product) {
+    if (err) {
+      return res.redirect("/index");
+    }
+    cart.add(product, product._id);
+    req.session.cart = cart;
+    req.user.cart = cart;
+
+    res.redirect(`/index/${id}`);
+  });
+});
 
 app.post("/create-checkout-session", isLoggedIn, async (req, res, next) => {
   if (!req.session.cart) {
@@ -158,12 +181,6 @@ app.post("/create-checkout-session", isLoggedIn, async (req, res, next) => {
       cancel_url: "http://localhost:3000/cart",
     });
     res.json({ id: session.id });
-
-    // console.log(session);
-    // const order = new Order({
-    //   user: req.user,
-    //   cart: cart,
-    // });
   } catch (e) {
     next(e);
   }
@@ -204,23 +221,6 @@ app.get("/getpayment_intents", isLoggedIn, async (req, res, next) => {
   }
 });
 
-app.get("/index/:id/add-to-cart", isLoggedIn, async (req, res) => {
-  const { id } = req.params;
-  const cart = new Cart(req.session.cart ? req.session.cart : {});
-
-  Product.findById(id, function (err, product) {
-    if (err) {
-      return res.redirect("/index");
-    }
-    cart.add(product, product._id);
-    req.session.cart = cart;
-    // console.log(id);
-    // console.log(req.session.cart);
-
-    res.redirect(`/index/${id}`);
-  });
-});
-
 app.get("/user/register", (req, res, next) => {
   res.render("user/register");
 });
@@ -228,6 +228,7 @@ app.get("/user/register", (req, res, next) => {
 app.post("/user/register", async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
+
     const user = new User({ email, username });
     const registeredUser = await User.register(user, password);
     req.login(registeredUser, (err) => {
@@ -265,11 +266,14 @@ app.post(
     const redirectUrl = req.session.returnTo || "/index";
     delete req.session.returnTo;
     // console.log(req);
+    // console.log(req.session.cart);
     res.redirect(redirectUrl);
   }
 );
 
 app.get("/user/logout", (req, res) => {
+  // console.log(req.user)
+  // req.session.cart.destroy();
   req.logout();
   req.flash("success", "Thank You For Shopping!");
   res.redirect("/index");
