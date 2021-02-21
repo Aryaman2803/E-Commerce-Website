@@ -1,6 +1,7 @@
-// .pageContentWrapper {
-//     min-height: 80vh;
-//   padding: 1rem;
-// //   margin-bottom: 50px;
-//   background-color: pink;
-// }
+.pageContentWrapper {
+  flex-grow: 1;
+  // min-height: 80vh;
+  //   padding: 1rem;
+  // //   margin-bottom: 50px;
+  background-color: $primary-light-color;
+}

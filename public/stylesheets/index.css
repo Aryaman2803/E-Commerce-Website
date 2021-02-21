@@ -78,12 +78,16 @@ footer {
   }
 }
 
+.pageContentWrapper {
+  flex-grow: 1;
+  background-color: #f5f5f7;
+}
+
 .login-main-container {
-  border: 1px solid red;
-  min-height: 60vh;
+  min-height: 84.3vh;
   display: flex;
-  margin-top: 50px;
   justify-content: center;
+  background-color: #111;
 }
 
 .login-main-container form {
@@ -91,32 +95,96 @@ footer {
 }
 
 .login-main-container form .login-form-container {
-  border: 1px solid powderblue;
-  min-height: 100%;
+  min-height: 50%;
   width: 100%;
+  margin-top: 30px;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5), -3px -3px 7px rgba(255, 255, 255, 0.05);
+  color: #ffffff;
   font-family: "EB Garamond", serif;
 }
 
 .login-main-container form .login-form-container h2 {
   text-align: center;
   padding: 15px 0 0 0;
-  font-size: 28px;
+  font-size: 35px;
+  font-weight: 400;
+  letter-spacing: 1.8px;
 }
 
 .login-main-container form .login-form-container .form-control {
-  border: 1px solid thistle;
-  min-height: 50px;
-  margin: 30px 0;
-  padding: 15px 0;
-}
-
-.login-main-container form .login-form-container .form-control label {
-  display: block;
-  font-size: 20px;
+  height: 70px;
+  width: 100%;
+  margin: 50px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .login-main-container form .login-form-container .form-control input {
+  height: 80%;
   width: 100%;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  background-color: #111;
+  color: #ffffff;
+  padding-left: 48px;
+  border-radius: 3px;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -3px -3px 7px rgba(255, 255, 255, 0.05);
+}
+
+.login-main-container form .login-form-container .form-control input:focus {
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5), inset -1px -1px 2px rgba(255, 255, 255, 0.05);
+}
+
+.login-main-container form .login-form-container .form-control input::placeholder {
+  font-size: 18px;
+}
+
+.login-main-container form .login-form-container .form-control span {
+  position: absolute;
+  left: 20px;
+}
+
+.login-main-container form .login-form-container p {
+  text-align: left;
+  margin: -20px 0 20px;
+  font-size: 17px;
+}
+
+.login-main-container form .login-form-container p a {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.login-main-container form .login-form-container p a:hover {
+  text-decoration: underline;
+  color: #60b8f3;
+}
+
+.login-main-container form .login-form-container button {
+  margin: 15px 0;
+  width: 100%;
+  height: 50px;
+  font-size: 18px;
+  background: #131419;
+  color: #ffffff;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #ffffff;
+  letter-spacing: 1.3px;
+  font-weight: 600;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5), -3px -3px 7px rgba(255, 255, 255, 0.05);
+}
+
+.login-main-container form .login-form-container button:focus {
+  color: #3498db;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -3px -3px 7px rgba(255, 255, 255, 0.05);
 }
 
 body {
@@ -139,6 +207,28 @@ html {
 @media screen and (max-width: 1024px) {
   .nav-links {
     min-width: 40%;
+  }
+  .login-main-container {
+    min-height: 85.2vh;
+  }
+  .login-main-container form {
+    width: 40%;
+  }
+  .login-main-container form .login-form-container {
+    padding: 20px 30px;
+    margin-top: 30px;
+  }
+}
+
+@media screen and (max-width: 1266px) {
+  .login-main-container {
+    min-height: 87vh;
+  }
+  .login-main-container form {
+    width: 40%;
+  }
+  .login-main-container form .login-form-container {
+    padding: 20px 30px;
   }
 }
 
@@ -166,5 +256,11 @@ html {
   .navbar-header nav .burger {
     display: block;
     cursor: pointer;
+  }
+  .login-main-container form {
+    width: 80%;
+  }
+  .login-main-container form .login-form-container {
+    padding: 20px 10px;
   }
 }
