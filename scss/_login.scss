@@ -3,19 +3,24 @@
   display: flex;
   justify-content: center;
   background-color: $login-dark-color;
-
+  // border-top: 1px solid rgb(141, 141, 141);
+  border-top: 1px solid rgba(58, 71, 82, 0.98);
+  border-bottom: 1px solid rgba(58, 71, 82, 0.98);
   form {
     width: 25%;
 
     .login-form-container {
-      // border: 1px solid powderblue;
       min-height: 50%;
       width: 100%;
-      margin-top: 30px;
+      margin-top: 100px;
+      background-color: $login-form-color;
       padding: 40px 30px;
       border-radius: 10px;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5),
-        -3px -3px 7px rgba(255, 255, 255, 0.05);
+      // box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5),
+      //   -3px -3px 7px rgba(255, 255, 255, 0.05);
+      box-shadow: rgba(58, 71, 82, 0.48) 3px 2px 8px 0px,
+        rgba(255, 255, 255, 0.062) -6px -2px 8px 0px;
+
       color: $light-color;
       // background-color: $dark-color;
       // min-width: 400px;
@@ -70,13 +75,14 @@
         font-size: 17px;
 
         a {
-          color: #3498db;
+          color: $login-signup-link-color;
           text-decoration: none;
           transition: color 0.2s ease;
         }
         a:hover {
           text-decoration: underline;
-          color: rgb(96, 184, 243);
+          // color: rgb(96, 184, 243);
+          color: darken($login-signup-link-color, 15%);
         }
       }
       button {

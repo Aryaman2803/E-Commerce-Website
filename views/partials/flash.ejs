@@ -2,7 +2,8 @@
 <% if(success && success.length){ %>
     <div class="flash-main-container success">
         <div class="flash-body-container success-container">
-            <%= success %>
+            <%=success%>
+                <span><i class="fas fa-times" id="closeBtn"></i></span>
         </div>
     </div>
     <% } %>
@@ -12,7 +13,8 @@
         <% if(error && error.length){ %>
             <div class="flash-main-container error">
                 <div class="flash-body-container error-container">
-                    <%= error %>
+                    <%=error%><span><i class="fas fa-times" id="closeBtn"></i></span>
                 </div>
+
             </div>
             <% } %>

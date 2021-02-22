@@ -57,6 +57,7 @@ footer {
   .nav-active {
     transform: translateX(0%);
     color: $light-color;
+    z-index: 9999;
   }
 
   @keyframes navLinkFade {

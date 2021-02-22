@@ -1,6 +1,28 @@
 <%- layout('/boilerplate/boilerplate') %>
 
-    <div class="register-main-container">
+    <div class="login-main-container">
+        <form action="/user/register" method="POST">
+            <div class="login-form-container">
+                <h2>Register</h2>
+                <div class="form-control">
+                    <span><i class="fas fa-user"></i></span>
+                    <input type="text" name="username" id="username" placeholder="Username" required autofocus
+                        autocomplete="off">
+                </div>
+                <div class="form-control">
+                    <span><i class="fas fa-at"></i></span>
+                    <input type="email" name="email" id="email" placeholder="Email" required autocomplete="off">
+                </div>
+                <div class="form-control">
+                    <span><i class="fas fa-lock"></i></span>
+                    <input type="text" name="password" id="password" placeholder="Password" required autocomplete="off">
+                </div>
+                <button>Register</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- <div class="register-main-container">
         <form action="/user/register" method="POST">
             <div class="register-form-container">
                 <h2>Register</h2>
@@ -19,4 +41,4 @@
                 <button>Register</button>
             </div>
         </form>
-    </div>
+    </div> -->

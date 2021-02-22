@@ -65,6 +65,7 @@ footer {
 .navbar-header .nav-active {
   transform: translateX(0%);
   color: #ffffff;
+  z-index: 9999;
 }
 
 @keyframes navLinkFade {
@@ -81,6 +82,61 @@ footer {
 .pageContentWrapper {
   flex-grow: 1;
   background-color: #f5f5f7;
+  position: relative;
+}
+
+.flash-main-container {
+  display: flex;
+  align-items: center;
+}
+
+.success {
+  margin-left: 2rem;
+}
+
+.error {
+  justify-content: center;
+}
+
+.flash-body-container {
+  min-height: 40px;
+  width: calc(35vw - 50px);
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  font-family: "EB Garamond", serif;
+  top: 30px;
+  padding: 0 15px;
+}
+
+.success-container {
+  background-color: lightgreen;
+  border: 1px solid #87a387;
+  color: #ffffff;
+  margin-top: -10px;
+}
+
+.error-container {
+  border: 1px solid #f5f5f7;
+  background-color: #111;
+  color: #f5f5f7;
+}
+
+.flash-main-container span i {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.flash-main-container span i:hover {
+  color: #cccccc;
+  cursor: pointer;
+}
+
+.flash-btn-close {
+  display: none;
 }
 
 .login-main-container {
@@ -88,6 +144,8 @@ footer {
   display: flex;
   justify-content: center;
   background-color: #111;
+  border-top: 1px solid rgba(58, 71, 82, 0.98);
+  border-bottom: 1px solid rgba(58, 71, 82, 0.98);
 }
 
 .login-main-container form {
@@ -97,10 +155,11 @@ footer {
 .login-main-container form .login-form-container {
   min-height: 50%;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 100px;
+  background-color: #010203;
   padding: 40px 30px;
   border-radius: 10px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5), -3px -3px 7px rgba(255, 255, 255, 0.05);
+  box-shadow: rgba(58, 71, 82, 0.48) 3px 2px 8px 0px, rgba(255, 255, 255, 0.062) -6px -2px 8px 0px;
   color: #ffffff;
   font-family: "EB Garamond", serif;
 }
@@ -162,7 +221,7 @@ footer {
 
 .login-main-container form .login-form-container p a:hover {
   text-decoration: underline;
-  color: #60b8f3;
+  color: #1d6fa5;
 }
 
 .login-main-container form .login-form-container button {

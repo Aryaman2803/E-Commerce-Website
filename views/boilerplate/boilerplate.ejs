@@ -56,51 +56,24 @@
     </header>
 
 
-    <%- include('../partials/flash') %>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.js"
-            integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
 
-            
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js"
+        integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
 
-        <div class="pageContentWrapper">
+
+
+    <div class="pageContentWrapper">
+        <%- include('../partials/flash') %>
             <%- body %>
-        </div>
+    </div>
 
-        <footer>
-            <span>&copy; Walmart 2021 </span>
-        </footer>
-
-
-        <script>
-            const navSlide = () => {
-                const burger = document.querySelector('.burger');
-                const nav = document.querySelector('.nav-links');
-                const navLinks = document.querySelectorAll('.nav-links li');
-
-                //Toggle Nav
-                burger.addEventListener('click', () => {
-                    nav.classList.toggle('nav-active')
-
-                    //Animate Links
-                    navLinks.forEach((links, index) => {
-                        if (links.style.animation) {
-                            links.style.animation = ''
-                        } else {
-                            links.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.7}s`;
-                        }
-                    })
-
-                    //Burger Animation
-                    burger.classList.toggle('toggle')
-                })
+    <footer>
+        <span>&copy; Walmart 2021 </span>
+    </footer>
 
 
-
-            }
-
-            navSlide();
-        </script>
+    <script src="/javascripts/validation.js"></script>
 </body>
 
 </html>
