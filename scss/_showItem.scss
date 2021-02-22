@@ -1,0 +1,73 @@
+.show-main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 120px);
+  width: 100%;
+  background-color: $primary-light-color;
+
+  .show-card-container {
+    border: 1px solid rgb(192, 188, 188);
+    display: flex;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    margin: 20px;
+    .left-container {
+      width: 450px;
+      height: 600px;
+
+      .show-card-img {
+        height: 100%;
+        // width: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .show-card-img img {
+        // height: 100%;
+        width: 60%;
+      }
+    }
+    .right-container {
+      width: 60%;
+      height: 100%;
+      font-family: $font-family;
+      margin-top: 4rem;
+
+      .show-card-category {
+        line-height: 30px;
+        font-size: large;
+      }
+      .show-card-title {
+        font-weight: bold;
+        font-size: 30px;
+      }
+      .show-card-price {
+        margin: 1.5rem 0;
+        font-weight: bolder;
+        font-size: 26px;
+      }
+      .show-card-description {
+        word-wrap: break-word;
+      }
+    }
+  }
+  .show-card-button {
+    margin-top: 1rem;
+    width: 250px;
+    height: 50px;
+    color: rgb(235, 230, 230);
+    background-color: $dark-color;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+  }
+  .show-card-button:hover {
+    transform: scale(0.98);
+  }
+  .show-card-button:focus {
+    outline: none;
+  }
+}

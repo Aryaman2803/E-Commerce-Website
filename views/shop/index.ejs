@@ -18,8 +18,11 @@
                     &#x20B9; <%= product.price %>
                 </div>
 
-                <a href="/add-to-cart/" class="index-add-to-cart">Add To Cart</a>
+                <!-- <a href="/add-to-cart/" class="index-add-to-cart">Add To Cart</a> -->
 
+                
+                <a href="/index/<%=product._id %>/add-to-cart" class="index-add-to-cart">Add To Cart</a>
+                <!-- <a href="<%=product._id %>/add-to-cart"><button class="show-card-button">Add To Cart </button></a> -->
             </div>
             <% } %>
 

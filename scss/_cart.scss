@@ -15,11 +15,25 @@
   font-size: 30px;
   font-weight: 700;
   padding: 1rem;
+
+  a {
+    float: right;
+    text-decoration: none;
+    color: $primary-light-color;
+    width: 150px;
+    padding: 2px;
+    text-align: center;
+    background-color: $dark-color;
+    transition: all 0.2s ease;
+  }
+  a:hover{
+    color: darken($primary-light-color,10%);
+  }
 }
 #borderBottom {
-  width: 90%;
+  width: 100%;
   margin-top: 23px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgb(185, 184, 184);
 }
 .right-body-container {
   height: 100%;

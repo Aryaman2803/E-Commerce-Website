@@ -5,6 +5,7 @@
 @import "allProducts";
 @import "cart";
 @import "profile";
+@import "showItem";
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap");
 
 body {
@@ -22,6 +23,5 @@ html {
   padding: 0;
   margin: 0;
 }
-
 
 @import "mobile";

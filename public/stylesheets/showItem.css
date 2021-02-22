@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 .show-main-container {
   display: flex;
   align-items: center;
@@ -9,7 +9,6 @@
 }
 
 .show-card-container {
-  /* margin-top: -10rem; */
   border: 1px solid rgb(192, 188, 188);
   display: flex;
   width: 80%;
@@ -66,4 +65,4 @@
 }
 .show-card-button:focus {
   outline: none;
-}
+} */

@@ -125,6 +125,18 @@ app.get("/cart", isLoggedIn, (req, res) => {
   // console.log(req.session.cart)
   // console.log(req.params.id);
 });
+
+app.get("/clearCart", (req, res) => {
+  req.session.cart = null;
+  res.redirect("/index");
+});
+
+app.get('/deleteItem/:id',(req,res)=>{
+  console.log(req.params)
+
+  res.redirect('/index')
+})
+
 app.get("/checkout", (req, res, next) => {
   if (!req.session.cart) {
     return res.render("shop/cart", { products: null });
