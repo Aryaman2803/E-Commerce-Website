@@ -2,12 +2,16 @@
 @import "boilerplate";
 @import "bodyShop";
 @import "login";
+@import "allProducts";
+@import "cart";
+@import "profile";
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap");
 
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
 }
 html {
   position: relative;

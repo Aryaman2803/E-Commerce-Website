@@ -2,23 +2,24 @@
     <span>
         <h1>User Profile</h1>
     </span>
-    <h2>My Orders</h2>
     <div class="orders-body-container">
+        <h2>My Orders</h2>
         <div class="orders-main-container">
             <% for(order of orders){ %>
                 <ul>
                     <li>
-                       <div class="list-container">
-                        <%for(ord of order.items){ %>
-                            <div class="order-title">
-                                <%=ord.item.title %>
-                            </div>
-
-                            <% } %>
-                                <div class="order-totalprice">
-                                    Total Price:&#8377; <%=order.cart.totalPrice +150%>
+                        <div class="list-container">
+                            <% var i=1 %> 
+                            <%for(ord of order.items){ %>
+                                <div class="order-title">
+                                    <%=`${i++}. ${ord.item.title}` %>
                                 </div>
-                       </div>
+
+                                <% } %>
+                                    <div class="order-totalprice">
+                                        Total Price:&#8377; <%=order.cart.totalPrice +150%>
+                                    </div>
+                        </div>
                     </li>
 
                 </ul>

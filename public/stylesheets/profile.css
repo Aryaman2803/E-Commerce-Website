@@ -1,13 +1,11 @@
-.orders-body-container {
+/* .orders-body-container {
   width: 100%;
-  /* height: auto; */
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .orders-main-container {
-  /* border: 1px solid black; */
   width: 50%;
 }
 .orders-main-container li {
@@ -27,4 +25,4 @@
   font-weight: bolder;
   text-align: right;
 
-}
+} */

@@ -1,0 +1,42 @@
+span h1{
+  font-size: 34px;
+  padding: 1rem 3rem;
+  // border-bottom: 1px solid rgb(175, 173, 173);
+  // width: 2??0%;
+}
+.orders-body-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  h2{
+    margin-top: 10px;
+    font-size: 26px;
+  }
+
+  .orders-main-container {
+    width: 40%;
+
+    li {
+      list-style: none;
+    }
+
+    .list-container {
+      border: 1px solid black;
+      height: auto;
+      padding: 1.4rem;
+      line-height: 40px;
+      margin: 1rem 0;
+      .order-title {
+        // height: 30px;
+        font-weight: 500;
+      }
+      .order-totalprice {
+        border-top: 1px solid rgb(175, 173, 173);
+        font-weight: bolder;
+        text-align: right;
+      }
+    }
+  }
+}
