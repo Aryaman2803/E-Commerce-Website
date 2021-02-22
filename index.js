@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+// const dotenv = require("dotenv");
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -25,28 +30,44 @@ const stripe = require("stripe")(
   "sk_test_51IL7crIfc54TOuJGE0BGM2BRvwH9uUgX9nKuxxh99Eu4TBgbYrBMbvPQPd7M6rGzF68r3F5xjBHekJElpavRHNRE00OUP20vKC"
 );
 
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/e-commerce";
+
+mongoose.connect(dbUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "Connection error:"));
+db.once("open", () => {
+  console.log("Database Connected!!!!");
+});
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
-const dbUrl = "mongodb://localhost:27017/e-commerce";
-const secret = "mysecret";
+const secret = process.env.SECRET || "mysecretofcode";
 const store = new MongoStore({
   url: dbUrl,
-  collection: "sessions",
+  collection: "usersession",
   secret: secret,
   touchAfter: 24 * 60 * 60,
 });
+
 store.on("error", function (e) {
   console.log("Session Store Error", e);
 });
+
 const sessionConfig = {
+  store,
   name: "usersession",
-  secret: "mysecret",
+  secret: secret,
   resave: false,
   store: store,
   saveUninitialized: true,
+
   // store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: {
     httpOnly: true,
@@ -131,11 +152,11 @@ app.get("/clearCart", (req, res) => {
   res.redirect("/index");
 });
 
-app.get('/deleteItem/:id',(req,res)=>{
-  console.log(req.params)
+// app.get('/deleteItem/:id',(req,res)=>{
+//   console.log(req.params)
 
-  res.redirect('/index')
-})
+//   res.redirect('/index')
+// })
 
 app.get("/checkout", (req, res, next) => {
   if (!req.session.cart) {
