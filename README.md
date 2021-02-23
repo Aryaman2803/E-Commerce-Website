@@ -1,6 +1,6 @@
 # E-Commerce-Website
 
-Buiut using - Nodejs | Mongodb | Expressjs | EJS | SASS | Stripe API
+Built using - Nodejs | Mongodb | Expressjs | EJS | SASS | Stripe API
 
 <ins></ins>
 To see the app in action, go to- https://getsupplies.herokuapp.com/index
