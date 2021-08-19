@@ -7,6 +7,6 @@ To see the app in action, go to- https://getsupplies.herokuapp.com/index
 <ins></ins>
 
 
-* For authentication it uses Passport
+* For authentication it uses Passport.js
 * Real Payment gateway.
 * Check your previous order under Profile section.

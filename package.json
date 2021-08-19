@@ -32,9 +32,6 @@
     "type": "git",
     "url": "git+https://github.com/Aryaman2803/E-Commerce-MERN-Application.git"
   },
-  "engines": {
-    "node": "10.16.0"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
